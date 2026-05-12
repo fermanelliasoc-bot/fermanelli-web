@@ -5,8 +5,6 @@ exports.handler = async function(event) {
 
   try {
     const body = JSON.parse(event.body);
-    console.log("Body recibido:", JSON.stringify(body).substring(0, 100));
-    console.log("API Key existe:", !!process.env.ANTHROPIC_API_KEY);
 
     const response = await fetch("https://api.anthropic.com/v1/messages", {
       method: "POST",
@@ -24,8 +22,30 @@ exports.handler = async function(event) {
     });
 
     const data = await response.json();
-    console.log("Respuesta status:", response.status);
-    console.log("Respuesta:", JSON.stringify(data).substring(0, 200));
+    const text = data.content?.[0]?.text || "";
+
+    // Si el texto contiene el resumen, enviamos el email
+    if (text.includes("===INICIO===") && text.includes("===FIN===")) {
+      const start = text.indexOf("===INICIO===") + 12;
+      const end = text.indexOf("===FIN===");
+      const resumen = text.substring(start, end).trim();
+
+      const nombre = (resumen.match(/NOMBRE:\s*(.+)/) || [])[1] || "Sin nombre";
+
+      await fetch("https://api.resend.com/emails", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${process.env.RESEND_API_KEY}`
+        },
+        body: JSON.stringify({
+          from: "onboarding@resend.dev",
+          to: "fermanelli.asoc@gmail.com",
+          subject: `Amparo de Salud — Nuevo caso: ${nombre}`,
+          text: `NUEVO CASO — FERMANELLI & ASOC\n${"─".repeat(40)}\n\n${resumen}\n\n${"─".repeat(40)}\nGenerado automáticamente.`
+        })
+      });
+    }
 
     return {
       statusCode: 200,
@@ -37,7 +57,6 @@ exports.handler = async function(event) {
     };
 
   } catch (error) {
-    console.log("Error:", error.message);
     return {
       statusCode: 500,
       body: JSON.stringify({ error: error.message })
