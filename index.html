@@ -1561,19 +1561,16 @@ function mostrarResumen(resumen) {
 
   const hdr = document.createElement("div");
   hdr.className = "summary-header";
-  hdr.innerHTML = `<span class="summary-title">Resumen del caso</span><span class="badge ${badgeClass}">${badgeText}</span>`;
+  hdr.innerHTML = `<span class="summary-title">Consulta recibida</span>`;
   sa.appendChild(hdr);
 
-  const grid = document.createElement("div");
-  grid.className = "fields-grid";
-  campos.filter(f=>f.key!=="CALIFICACIÓN").forEach(f=>{
-    const item = document.createElement("div");
-    item.className = `field-item${FULL_WIDTH.includes(f.key)?" full":""}`;
-    const lbl = document.createElement("div"); lbl.className="field-label"; lbl.textContent=FIELD_LABELS[f.key]||f.key;
-    const val = document.createElement("div"); val.className="field-value"; val.textContent=f.value;
-    item.appendChild(lbl); item.appendChild(val); grid.appendChild(item);
-  });
-  sa.appendChild(grid);
+  const confirm = document.createElement("div");
+  confirm.style.cssText = "background: var(--verde-claro); border: 1px solid rgba(45,90,52,0.2); border-radius: 8px; padding: 20px; text-align: center;";
+  confirm.innerHTML = `
+    <div style="font-family:sans-serif; font-size:15px; font-weight:700; color:var(--verde-medio); margin-bottom:8px;">Tu consulta fue recibida</div>
+    <div style="font-family:sans-serif; font-size:13px; color:var(--texto-suave); line-height:1.7;">El estudio va a analizar tu caso y nos contactaremos a la brevedad al número que indicaste.</div>
+  `;
+  sa.appendChild(confirm);
 
   const btn = document.createElement("div");
   btn.style.cssText = "background: var(--verde-claro); border: 1px solid rgba(45,90,52,0.2); border-radius: 8px; padding: 16px; text-align: center;";
