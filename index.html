@@ -1575,15 +1575,12 @@ function mostrarResumen(resumen) {
   });
   sa.appendChild(grid);
 
-  const nombre = campos.find(f=>f.key==="NOMBRE")?.value || "Sin nombre";
-  const btn = document.createElement("button");
-  btn.className = "btn-email";
-  btn.innerHTML = "Enviar resumen al estudio";
-  btn.onclick = () => {
-    const subj = encodeURIComponent(`Amparo de Salud — Nuevo caso: ${nombre}`);
-    const body = encodeURIComponent(`NUEVO CASO — FERMANELLI & ASOC\nSistema de triage amparo de salud\n${"─".repeat(40)}\n\n${resumen}\n\n${"─".repeat(40)}\nGenerado automáticamente.`);
-    window.open(`mailto:${LAWYER_EMAIL}?subject=${subj}&body=${body}`);
-  };
+  const btn = document.createElement("div");
+  btn.style.cssText = "background: var(--verde-claro); border: 1px solid rgba(45,90,52,0.2); border-radius: 8px; padding: 16px; text-align: center;";
+  btn.innerHTML = `
+    <div style="font-family:sans-serif; font-size:15px; font-weight:700; color:var(--verde-medio); margin-bottom:6px;">Tu consulta fue recibida</div>
+    <div style="font-family:sans-serif; font-size:13px; color:var(--texto-suave); line-height:1.6;">Un abogado del estudio te va a contactar a la brevedad al número que indicaste.</div>
+  `;
   sa.appendChild(btn);
 }
 
