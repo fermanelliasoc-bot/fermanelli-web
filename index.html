@@ -5,6 +5,14 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Amparo de Salud — Fermanelli & Asoc</title>
 <meta name="description" content="¿Tu obra social te niega cobertura? Iniciamos tu amparo de salud. Fermanelli & Asoc, estudio jurídico especializado en todo el país." />
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=AW-18156391985"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'AW-18156391985');
+</script>
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -1598,7 +1606,12 @@ async function llamarAPI() {
     quitarTyping();
     agregarBurbuja(limpio, false);
     messages.push({ role:"assistant", content:txt });
-    if (resumen) { done=true; setTimeout(()=>mostrarResumen(resumen),400); }
+    if (resumen) { done=true; setTimeout(()=>mostrarResumen(resumen),400);
+    // Google Ads conversion
+    if (typeof gtag !== 'undefined') {
+      gtag('event', 'conversion', {'send_to': 'AW-18156391985/QvJNCPe84KwcELGc0tFD'});
+    }
+  }
   } catch {
     quitarTyping();
     agregarBurbuja("Hubo un error. Por favor recargá la página e intentá de nuevo.", false);
